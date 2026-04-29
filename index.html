@@ -21,25 +21,46 @@
            WECLIMATE THEME VARIABLES
            ========================================= */
         :root {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --text-main: #e0e0e0;
-            --text-muted: #9ca3af;
-            --border-color: #333333;
+            --bg-color: #0a0e27;
+            --card-bg: #1a1f3a;
+            --text-main: #e8f0ff;
+            --text-muted: #a8b5d1;
+            --border-color: #2d3a5c;
             --shadow-color: #000000;
-            --accent-1: #4ade80; /* Green (Environment) */
-            --accent-2: #818cf8; /* Indigo */
+            --accent-1: #10b981; /* Green (Environment) */
+            --accent-2: #06b6d4; /* Cyan (Water) */
             --accent-error: #ef4444; /* Red (Crisis) */
-            --accent-warn: #eab308; /* Yellow (Sun/Heat) */
+            --accent-warn: #fbbf24; /* Amber (Sun/Heat) */
         }
 
         body {
-            background-color: var(--bg-color); 
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1a35 100%);
             color: var(--text-main);
             font-family: 'Space Mono', monospace;
             overflow: hidden;
             margin: 0;
             padding: 0;
+            position: relative;
+        }
+
+        /* Animated background elements */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: drift 20s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
         }
 
         h1, h2, h3, .archivo-black { 
@@ -49,27 +70,36 @@
         /* Neo-Brutalist Utilities */
         .neo-box {
             background-color: var(--card-bg);
-            border: 4px solid var(--border-color);
-            box-shadow: 8px 8px 0 0 var(--shadow-color);
-            border-radius: 8px;
+            border: 3px solid var(--border-color);
+            box-shadow: 6px 6px 0 0 var(--shadow-color);
+            border-radius: 6px;
+            position: relative;
+            z-index: 1;
         }
 
         .neo-btn {
             background-color: var(--accent-1); 
             color: var(--bg-color);
-            border: 3px solid var(--border-color); 
-            box-shadow: 4px 4px 0 0 var(--shadow-color);
-            transition: all 0.1s; 
-            border-radius: 6px; 
+            border: 2px solid var(--border-color); 
+            box-shadow: 3px 3px 0 0 var(--shadow-color);
+            transition: all 0.2s; 
+            border-radius: 4px; 
             font-weight: bold; 
             cursor: pointer;
             text-transform: uppercase;
             font-family: 'Archivo Black', sans-serif;
+            position: relative;
+            z-index: 1;
+        }
+
+        .neo-btn:hover {
+            box-shadow: 2px 2px 0 0 var(--shadow-color);
+            transform: translate(1px, 1px);
         }
 
         .neo-btn:active {
             box-shadow: 0 0 0 0 var(--shadow-color); 
-            transform: translate(4px, 4px);
+            transform: translate(3px, 3px);
         }
 
         /* Slide Transitions */
@@ -78,7 +108,7 @@
             inset: 0;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
             transform: scale(0.95);
             display: flex;
             flex-direction: column;
@@ -86,6 +116,7 @@
             align-items: center;
             padding: 2rem;
             box-sizing: border-box;
+            z-index: 1;
         }
 
         .slide.active {
@@ -100,14 +131,64 @@
             background: linear-gradient(to right, var(--accent-1), var(--accent-2));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
+
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .float-animate {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Pulse animation */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.6); }
+        }
+
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        /* Slide counter */
+        .slide-counter {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Fade in animation for team cards */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .team-card {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .team-card:nth-child(1) { animation-delay: 0.1s; }
+        .team-card:nth-child(2) { animation-delay: 0.2s; }
+        .team-card:nth-child(3) { animation-delay: 0.3s; }
+        .team-card:nth-child(4) { animation-delay: 0.4s; }
+        .team-card:nth-child(5) { animation-delay: 0.5s; }
+        .team-card:nth-child(6) { animation-delay: 0.6s; }
     </style>
 </head>
 <body class="h-screen w-screen relative">
 
     <!-- Progress Bar -->
     <div class="absolute top-0 left-0 h-2 bg-[var(--card-bg)] w-full z-50">
-        <div id="progressBar" class="h-full bg-[var(--accent-1)] transition-all duration-300" style="width: 0%;"></div>
+        <div id="progressBar" class="h-full bg-gradient-to-r from-[var(--accent-1)] to-[var(--accent-2)] transition-all duration-300" style="width: 0%;"></div>
     </div>
 
     <!-- Slides Container -->
@@ -115,13 +196,15 @@
 
         <!-- Slide 1: Title -->
         <div class="slide active" id="slide-1">
-            <div class="text-center space-y-8 relative">
-                <i data-lucide="globe" class="absolute -top-16 -left-16 w-32 h-32 text-[var(--accent-1)] opacity-20"></i>
-                <div class="inline-block bg-[var(--card-bg)] px-4 py-1 border-2 border-[var(--border-color)] text-[var(--text-muted)] tracking-widest uppercase text-sm mb-4">
+            <div class="text-center space-y-8 relative z-10">
+                <div class="float-animate">
+                    <i data-lucide="globe" class="w-32 h-32 text-[var(--accent-1)] opacity-40 mx-auto"></i>
+                </div>
+                <div class="inline-block bg-[var(--card-bg)] px-4 py-2 border-2 border-[var(--accent-2)] text-[var(--text-muted)] tracking-widest uppercase text-sm mb-4 rounded">
                     Brookhouse School • Environmental Initiative
                 </div>
                 <h1 class="text-7xl md:text-9xl archivo-black tracking-tighter text-gradient drop-shadow-lg">WeClimate</h1>
-                <h2 class="text-xl md:text-2xl text-[var(--text-main)] max-w-2xl mx-auto mt-4 leading-relaxed font-bold border-l-4 border-[var(--accent-1)] pl-4 text-left bg-[var(--card-bg)] p-4">
+                <h2 class="text-xl md:text-2xl text-[var(--text-main)] max-w-2xl mx-auto mt-4 leading-relaxed font-bold border-l-4 border-[var(--accent-1)] pl-4 text-left bg-[var(--card-bg)] p-4 rounded">
                     Adapting to Climate Change & Environmental Instability Through Data.
                 </h2>
                 
@@ -135,12 +218,12 @@
 
         <!-- Slide 2: Team -->
         <div class="slide" id="slide-2">
-            <h2 class="text-4xl md:text-5xl archivo-black mb-8 border-b-4 border-[var(--border-color)] pb-2 text-center w-full max-w-6xl">THE DEVELOPMENT TEAM</h2>
+            <h2 class="text-4xl md:text-5xl archivo-black mb-8 border-b-4 border-[var(--accent-2)] pb-4 text-center w-full max-w-6xl">THE DEVELOPMENT TEAM</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl">
-                <!-- Group Leader (You) -->
-                <div class="neo-box p-6 flex flex-col items-center text-center bg-[var(--border-color)] border-[var(--accent-1)]">
-                    <div class="w-16 h-16 bg-[var(--accent-1)] rounded-full border-2 border-[var(--bg-color)] flex items-center justify-center mb-4">
+                <!-- Group Leader -->
+                <div class="neo-box p-6 flex flex-col items-center text-center bg-gradient-to-br from-[var(--card-bg)] to-[var(--bg-color)] border-[var(--accent-1)] team-card">
+                    <div class="w-16 h-16 bg-[var(--accent-1)] rounded-full border-3 border-[var(--bg-color)] flex items-center justify-center mb-4 pulse-glow">
                         <i data-lucide="crown" class="w-8 h-8 text-[var(--bg-color)]"></i>
                     </div>
                     <h3 class="text-xl archivo-black text-white mb-1">Muhammad Nazim Zain</h3>
@@ -148,8 +231,8 @@
                 </div>
 
                 <!-- Presenter 1 -->
-                <div class="neo-box p-6 flex flex-col items-center text-center">
-                    <div class="w-16 h-16 bg-[var(--accent-2)] rounded-full border-2 border-[var(--bg-color)] flex items-center justify-center mb-4">
+                <div class="neo-box p-6 flex flex-col items-center text-center border-[var(--accent-2)] team-card">
+                    <div class="w-16 h-16 bg-[var(--accent-2)] rounded-full border-3 border-[var(--bg-color)] flex items-center justify-center mb-4">
                         <i data-lucide="mic" class="w-8 h-8 text-[var(--bg-color)]"></i>
                     </div>
                     <h3 class="text-xl archivo-black text-[var(--text-main)] mb-1">Neil Lutta</h3>
@@ -157,8 +240,8 @@
                 </div>
 
                 <!-- Presenter 2 -->
-                <div class="neo-box p-6 flex flex-col items-center text-center">
-                    <div class="w-16 h-16 bg-[var(--accent-2)] rounded-full border-2 border-[var(--bg-color)] flex items-center justify-center mb-4">
+                <div class="neo-box p-6 flex flex-col items-center text-center border-[var(--accent-2)] team-card">
+                    <div class="w-16 h-16 bg-[var(--accent-2)] rounded-full border-3 border-[var(--bg-color)] flex items-center justify-center mb-4">
                         <i data-lucide="mic-2" class="w-8 h-8 text-[var(--bg-color)]"></i>
                     </div>
                     <h3 class="text-xl archivo-black text-[var(--text-main)] mb-1">Guanzhe Wang</h3>
@@ -166,8 +249,8 @@
                 </div>
 
                 <!-- Design -->
-                <div class="neo-box p-6 flex flex-col items-center text-center">
-                    <div class="w-16 h-16 bg-[#f472b6] rounded-full border-2 border-[var(--bg-color)] flex items-center justify-center mb-4">
+                <div class="neo-box p-6 flex flex-col items-center text-center border-[#f472b6] team-card">
+                    <div class="w-16 h-16 bg-[#f472b6] rounded-full border-3 border-[var(--bg-color)] flex items-center justify-center mb-4">
                         <i data-lucide="palette" class="w-8 h-8 text-[var(--bg-color)]"></i>
                     </div>
                     <h3 class="text-xl archivo-black text-[var(--text-main)] mb-1">Andualem Shibru</h3>
@@ -175,21 +258,21 @@
                 </div>
 
                 <!-- Assistance Dev -->
-                <div class="neo-box p-6 flex flex-col items-center text-center">
-                    <div class="w-16 h-16 bg-[var(--accent-warn)] rounded-full border-2 border-[var(--bg-color)] flex items-center justify-center mb-4">
+                <div class="neo-box p-6 flex flex-col items-center text-center border-[var(--accent-warn)] team-card">
+                    <div class="w-16 h-16 bg-[var(--accent-warn)] rounded-full border-3 border-[var(--bg-color)] flex items-center justify-center mb-4">
                         <i data-lucide="wrench" class="w-8 h-8 text-[var(--bg-color)]"></i>
                     </div>
                     <h3 class="text-xl archivo-black text-[var(--text-main)] mb-1">Austin Kabu</h3>
                     <p class="text-[var(--accent-warn)] text-xs font-bold uppercase tracking-wide">Assistance In Development</p>
                 </div>
 
-                <!-- Member -->
-                <div class="neo-box p-6 flex flex-col items-center text-center">
-                    <div class="w-16 h-16 bg-[var(--text-muted)] rounded-full border-2 border-[var(--bg-color)] flex items-center justify-center mb-4">
-                        <i data-lucide="users" class="w-8 h-8 text-[var(--bg-color)]"></i>
+                <!-- Third in Development -->
+                <div class="neo-box p-6 flex flex-col items-center text-center border-[var(--accent-2)] team-card">
+                    <div class="w-16 h-16 bg-[var(--accent-2)] rounded-full border-3 border-[var(--bg-color)] flex items-center justify-center mb-4">
+                        <i data-lucide="code" class="w-8 h-8 text-[var(--bg-color)]"></i>
                     </div>
                     <h3 class="text-xl archivo-black text-[var(--text-main)] mb-1">Moi Lansana-Wonneh</h3>
-                    <p class="text-[var(--text-main)] text-xs font-bold uppercase tracking-wide">Group Member</p>
+                    <p class="text-[var(--accent-2)] text-xs font-bold uppercase tracking-wide">Third in Development</p>
                 </div>
             </div>
         </div>
@@ -272,7 +355,7 @@
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-6xl">
                 
-                <div class="neo-box p-8 flex flex-col items-center text-center bg-[var(--bg-color)]">
+                <div class="neo-box p-8 flex flex-col items-center text-center bg-[var(--bg-color)] border-[var(--accent-error)]">
                     <div class="bg-[var(--accent-error)] text-white p-5 rounded border-4 border-[var(--border-color)] mb-6 transform -rotate-3">
                         <i data-lucide="waves" class="w-10 h-10"></i>
                     </div>
@@ -280,7 +363,7 @@
                     <p class="text-[var(--text-muted)]">Acts as an early warning system for sudden environmental hazards like flash floods or extreme heatwaves.</p>
                 </div>
 
-                <div class="neo-box p-8 flex flex-col items-center text-center bg-[var(--bg-color)]">
+                <div class="neo-box p-8 flex flex-col items-center text-center bg-[var(--bg-color)] border-[var(--accent-2)] pulse-glow">
                     <div class="bg-[var(--accent-2)] text-white p-5 rounded border-4 border-[var(--border-color)] mb-6 transform scale-110 z-10">
                         <i data-lucide="sprout" class="w-12 h-12"></i>
                     </div>
@@ -288,7 +371,7 @@
                     <p class="text-[var(--text-muted)]">Guides farmers on the narrow windows of opportunity to plant crops in a destabilized climate.</p>
                 </div>
 
-                <div class="neo-box p-8 flex flex-col items-center text-center bg-[var(--bg-color)]">
+                <div class="neo-box p-8 flex flex-col items-center text-center bg-[var(--bg-color)] border-[var(--accent-1)]">
                     <div class="bg-[var(--accent-1)] text-[var(--bg-color)] p-5 rounded border-4 border-[var(--border-color)] mb-6 transform rotate-3">
                         <i data-lucide="tractor" class="w-10 h-10"></i>
                     </div>
@@ -305,7 +388,7 @@
             
             <div class="flex flex-col md:flex-row items-center justify-center gap-8 w-full max-w-5xl">
                 
-                <div class="neo-box p-8 flex-1 bg-[var(--card-bg)] text-center w-full">
+                <div class="neo-box p-8 flex-1 bg-[var(--card-bg)] text-center w-full border-[var(--accent-2)]">
                     <h3 class="text-xl text-[var(--accent-2)] font-bold uppercase mb-4">Tracking Environmental Variables:</h3>
                     <ul class="space-y-4 text-left font-bold text-lg inline-block text-[var(--text-main)]">
                         <li class="flex items-center gap-2"><i data-lucide="droplets" class="text-[var(--accent-1)]"></i> Shifting Rainfall Volumes</li>
@@ -345,7 +428,7 @@
         <!-- Slide 8: Thank You -->
         <div class="slide" id="slide-8">
             <div class="text-center space-y-6">
-                <div class="w-32 h-32 mx-auto bg-[var(--accent-1)] rounded-full flex items-center justify-center border-4 border-[var(--border-color)] mb-8 shadow-[8px_8px_0_0_var(--shadow-color)] animate-bounce">
+                <div class="w-32 h-32 mx-auto bg-[var(--accent-1)] rounded-full flex items-center justify-center border-4 border-[var(--border-color)] mb-8 shadow-[8px_8px_0_0_var(--shadow-color)] float-animate">
                     <i data-lucide="globe" class="w-16 h-16 text-[var(--bg-color)]"></i>
                 </div>
                 <h1 class="text-7xl md:text-9xl archivo-black tracking-tighter text-[var(--text-main)]">THANK YOU.</h1>
@@ -355,7 +438,7 @@
                     <button onclick="goToSlide(0)" class="neo-btn px-6 py-3 flex items-center gap-2 bg-[var(--card-bg)] text-[var(--text-main)] hover:bg-[var(--border-color)] w-full md:w-auto justify-center">
                         <i data-lucide="rotate-ccw"></i> Restart
                     </button>
-                    <!-- Link to local application (now renamed to app.html) -->
+                    <!-- Link to the app -->
                     <a href="app.html" class="neo-btn px-6 py-3 flex items-center gap-2 bg-[var(--accent-2)] text-white hover:-translate-y-1 transition-transform no-underline w-full md:w-auto justify-center">
                         <i data-lucide="rocket"></i> Launch WeClimate App
                     </a>
@@ -373,7 +456,7 @@
             </button>
         </div>
         
-        <div class="font-bold text-[var(--text-muted)] tracking-widest uppercase text-sm">
+        <div class="font-bold text-[var(--text-muted)] tracking-widest uppercase text-sm slide-counter">
             Slide <span id="currentSlideNum" class="text-[var(--text-main)]">1</span> / <span id="totalSlidesNum">8</span>
         </div>
 

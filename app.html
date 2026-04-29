@@ -21,18 +21,18 @@
 
   <style>
     /* =========================================
-       THEME PRESETS & VARIABLES
+       CLIMATE THEME VARIABLES
        ========================================= */
     :root {
-      /* Midnight Black (Default) */
-      --bg-color: #121212;
-      --card-bg: #1e1e1e;
-      --text-main: #e0e0e0;
-      --text-muted: #9ca3af;
-      --border-color: #333333;
+      /* Climate-focused Dark Theme (Default) */
+      --bg-color: #0a0e27;
+      --card-bg: #1a1f3a;
+      --text-main: #e8f0ff;
+      --text-muted: #a8b5d1;
+      --border-color: #2d3a5c;
       --shadow-color: #000000;
-      --accent-1: #4ade80; /* Green */
-      --accent-2: #818cf8; /* Indigo */
+      --accent-1: #10b981; /* Green (Environment) */
+      --accent-2: #06b6d4; /* Cyan (Water) */
     }
 
     :root[data-theme="sage"] {
@@ -94,10 +94,11 @@
        GLOBAL STYLES
        ========================================= */
     body {
-      background-color: var(--bg-color); color: var(--text-main);
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1a35 100%);
+      color: var(--text-main);
       font-family: 'Space Mono', monospace;
       transition: background-color 0.3s ease, color 0.3s ease;
-      -webkit-tap-highlight-color: transparent; /* Remove mobile tap highlight */
+      -webkit-tap-highlight-color: transparent;
     }
 
     h1, h2, h3, .archivo-black { font-family: 'Archivo Black', sans-serif; }
@@ -115,24 +116,36 @@
     }
 
     .neo-btn {
-      background-color: var(--accent-1); color: var(--bg-color);
-      border: 3px solid var(--border-color); box-shadow: 4px 4px 0 0 var(--shadow-color);
-      transition: all 0.1s; border-radius: 6px; font-weight: bold; cursor: pointer;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      color: var(--bg-color);
+      border: 3px solid var(--border-color); 
+      box-shadow: 4px 4px 0 0 var(--shadow-color);
+      transition: all 0.1s; 
+      border-radius: 6px; 
+      font-weight: bold; 
+      cursor: pointer;
     }
     
     .neo-btn-secondary {
-      background-color: var(--card-bg); color: var(--text-main);
-      border: 3px solid var(--border-color); box-shadow: 4px 4px 0 0 var(--shadow-color);
-      transition: all 0.1s; border-radius: 6px; cursor: pointer;
+      background-color: var(--card-bg); 
+      color: var(--text-main);
+      border: 3px solid var(--border-color); 
+      box-shadow: 4px 4px 0 0 var(--shadow-color);
+      transition: all 0.1s; 
+      border-radius: 6px; 
+      cursor: pointer;
     }
 
     .neo-btn:active, .neo-btn-secondary:active {
-      box-shadow: 0 0 0 0 var(--shadow-color); transform: translate(4px, 4px);
+      box-shadow: 0 0 0 0 var(--shadow-color); 
+      transform: translate(4px, 4px);
     }
 
     .neo-input {
-      background-color: var(--card-bg); color: var(--text-main);
-      border: 3px solid var(--border-color); border-radius: 6px;
+      background-color: var(--card-bg); 
+      color: var(--text-main);
+      border: 3px solid var(--border-color); 
+      border-radius: 6px;
     }
     .neo-input:focus { outline: none; border-color: var(--accent-2); }
 
@@ -141,9 +154,7 @@
     .custom-scrollbar::-webkit-scrollbar-track { background: var(--bg-color); border-radius: 4px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background-color: var(--accent-1); border-radius: 4px; }
 
-    /* =========================================
-       DRAG AND DROP STYLES (SortableJS)
-       ========================================= */
+    /* Drag and Drop Styles */
     .drag-handle { cursor: grab; touch-action: none; }
     .drag-handle:active { cursor: grabbing; }
     .sortable-ghost { opacity: 0.4; background-color: var(--bg-color); border: 2px dashed var(--accent-1); }
@@ -151,9 +162,29 @@
 
     /* Modals */
     dialog::backdrop { background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px); }
+
+    /* Animated background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: drift 20s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes drift {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
   </style>
 </head>
-<body class="p-2 md:p-6 min-h-screen flex flex-col items-center overflow-x-hidden">
+<body class="p-2 md:p-6 min-h-screen flex flex-col items-center overflow-x-hidden relative z-10">
 
   <!-- Info & QOL Modal -->
   <dialog id="infoModal" class="neo-box p-0 max-w-2xl w-[95%] mx-auto mt-10 md:mt-20 bg-[var(--card-bg)] text-[var(--text-main)] m-2">
@@ -222,16 +253,16 @@
   </div>
 
   <!-- App Container -->
-  <div class="w-full max-w-7xl space-y-4 md:space-y-8">
+  <div class="w-full max-w-7xl space-y-4 md:space-y-8 relative z-10">
       
       <!-- Responsive Header -->
       <header class="neo-box p-3 md:p-6 flex flex-col lg:flex-row justify-between items-center gap-4 relative z-10">
           <div class="flex items-center justify-between w-full lg:w-auto">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 md:w-12 md:h-12 bg-[var(--accent-1)] rounded-full flex items-center justify-center border-2 md:border-4 border-[var(--border-color)]">
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-[var(--accent-1)] to-[var(--accent-2)] rounded-full flex items-center justify-center border-2 md:border-4 border-[var(--border-color)]">
                     <i data-lucide="globe-2" class="text-[var(--bg-color)] w-5 h-5 md:w-6 md:h-6"></i>
                 </div>
-                <h1 class="text-3xl md:text-4xl uppercase tracking-tighter" style="color: var(--text-main);">WeClimate</h1>
+                <h1 class="text-3xl md:text-4xl uppercase tracking-tighter text-gradient" style="background: linear-gradient(to right, var(--accent-1), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">WeClimate</h1>
               </div>
               <!-- Mobile Info Btn -->
               <button onclick="document.getElementById('infoModal').showModal()" class="neo-btn-secondary p-2 lg:hidden">
@@ -247,7 +278,7 @@
 
             <div class="flex gap-1 w-full md:w-auto order-3 lg:order-none">
                 <select id="themeSelect" class="neo-input p-2 md:p-3 font-bold uppercase text-xs md:text-sm flex-grow">
-                    <option value="midnight">🌙 Midnight</option>
+                    <option value="midnight">🌙 Climate (Default)</option>
                     <option value="sage">🌿 Sage Green</option>
                     <option value="ocean">🌊 Ocean Blue</option>
                     <option value="mocha">☕ Mocha</option>
@@ -475,7 +506,6 @@
             controls: "Controles", live_data: "Métricas", hourly_forecast: "Por Hora", live_area_map: "Mapa", "7_day_outlook": "7 Días", agro_logic: "Agro-Lógica", logistics_engine: "Logística",
             agro_waiting: "Seleccione ubicación y cultivo.", logistics_waiting: "Esperando datos logísticos."
         }
-        // Simplified for code brevity, other langs fallback to EN or keys
     };
 
     function t(key) { return translations[currentLang]?.[key] || translations['en'][key] || key; }
@@ -527,7 +557,6 @@
     function setupDragAndDrop() {
         const grid = document.getElementById('widgetGrid');
         
-        // Initialize SortableJS
         new Sortable(grid, {
             animation: 150,
             handle: '.drag-handle',
@@ -539,7 +568,6 @@
             }
         });
 
-        // Load saved order
         try {
             const savedOrder = JSON.parse(localStorage.getItem('weclimate_widget_order') || '[]');
             if (savedOrder.length > 0) {
@@ -551,10 +579,9 @@
         } catch(e) {}
     }
 
-    // Reset Layout Logic
     document.getElementById('resetLayoutBtn').addEventListener('click', () => {
         localStorage.removeItem('weclimate_widget_order');
-        location.reload(); // Quickest way to snap HTML back to original order
+        location.reload();
     });
 
     // --- Image-to-Theme Engine ---
@@ -572,15 +599,13 @@
         reader.onload = (event) => {
             const img = new Image();
             img.onload = () => {
-                // Draw to hidden canvas to read pixels
-                canvas.width = 64; canvas.height = 64; // Scale down for speed
+                canvas.width = 64; canvas.height = 64;
                 ctx.drawImage(img, 0, 0, 64, 64);
                 extractThemeFromCanvas();
-                themeSelect.value = "custom"; // Select custom option
+                themeSelect.value = "custom";
                 localStorage.setItem('weclimate_theme', 'custom');
             };
             img.src = event.target.result;
-            // Save base64 to local storage to persist theme
             try { localStorage.setItem('weclimate_custom_img', event.target.result); } catch(err) { console.warn("Image too large for LocalStorage"); }
         };
         reader.readAsDataURL(file);
@@ -608,15 +633,13 @@
         const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
         let r=0, g=0, b=0, count=0;
         
-        // Simple Average Color extraction
-        for(let i=0; i<imgData.length; i+=16) { // Sample every 4th pixel
+        for(let i=0; i<imgData.length; i+=16) {
             r += imgData[i]; g += imgData[i+1]; b += imgData[i+2]; count++;
         }
         r = Math.floor(r/count); g = Math.floor(g/count); b = Math.floor(b/count);
 
         const [h, s, l] = rgbToHsl(r, g, b);
         
-        // Generate a cohesive palette
         const isDark = l < 50;
         const bgL = isDark ? Math.max(l - 10, 5) : Math.min(l + 10, 95);
         const cardL = isDark ? Math.min(l + 5, 20) : Math.max(l - 5, 80);
@@ -624,7 +647,6 @@
         const mutedHex = isDark ? '#94a3b8' : '#475569';
         const borderHex = isDark ? `hsl(${h}, ${s}%, ${cardL + 15}%)` : `hsl(${h}, ${s}%, ${cardL - 15}%)`;
         
-        // Complementary accent
         const accH = (h + 180) % 360;
 
         const root = document.documentElement;
@@ -642,10 +664,9 @@
     themeSelect.addEventListener('change', (e) => {
         const val = e.target.value;
         if(val !== 'custom') {
-            document.documentElement.style = ''; // Clear inline styles
+            document.documentElement.style = '';
             document.documentElement.setAttribute('data-theme', val);
         } else {
-            // Re-apply saved custom theme if exists
             const savedImg = localStorage.getItem('weclimate_custom_img');
             if(savedImg) {
                 const img = new Image();
@@ -744,7 +765,6 @@
             const weatherRes = await fetch(url);
             lastWeatherData = await weatherRes.json();
             
-            // Save last searched city
             localStorage.setItem('weclimate_last_city', name);
             renderWeather(lastWeatherData, name, latitude, longitude);
         } catch (error) {
@@ -769,18 +789,15 @@
         document.getElementById('feelsLike').textContent = formatTemp(data.current.apparent_temperature);
         document.getElementById('humidity').textContent = `${data.current.relative_humidity_2m}%`;
         
-        // Speed conversion based on unit selection
         const speedKmh = data.current.wind_speed_10m;
         document.getElementById('windSpeed').textContent = isCelsius ? `${speedKmh} km/h` : `${Math.round(speedKmh * 0.621371)} mph`;
         
         document.getElementById('uvIndex').textContent = data.daily.uv_index_max?.[0] ?? '--';
         
-        // Map Update
         const offset = 0.05;
         document.getElementById('mapIframe').src = `https://www.openstreetmap.org/export/embed.html?bbox=${lon-offset},${lat-offset},${lon+offset},${lat+offset}&layer=mapnik&marker=${lat},${lon}`;
         setTimeout(() => document.getElementById('mapOverlay').style.display = 'none', 500);
 
-        // Hourly
         const nowMs = Date.now();
         for(let i=0, count=0; i<48 && count<24; i++) {
             if(!data.hourly.time[i]) continue;
@@ -798,7 +815,6 @@
             count++;
         }
 
-        // Daily
         for(let i=0; i<7; i++) {
             const date = new Date(data.daily.time[i]);
             let dayName = i===0 ? (translations[currentLang]?.['today'] || 'Today') : date.toLocaleDateString(currentLang, {weekday: 'short'});
@@ -823,7 +839,6 @@
         localStorage.setItem('weclimate_unit', isCelsius ? 'C' : 'F');
         applyTranslations();
         if(lastWeatherData && document.getElementById('heroLocationName').textContent !== '--') {
-            // Re-render immediately using cached data to update numbers
             const lat = lastWeatherData.latitude; const lon = lastWeatherData.longitude;
             renderWeather(lastWeatherData, document.getElementById('heroLocationName').textContent, lat, lon);
         }
@@ -832,7 +847,7 @@
     langSelect.addEventListener('change', (e) => {
         currentLang = e.target.value; localStorage.setItem('weclimate_lang', currentLang);
         applyTranslations();
-        if(lastWeatherData) renderWeather(lastWeatherData, document.getElementById('heroLocationName').textContent, 0, 0); // Re-render dates
+        if(lastWeatherData) renderWeather(lastWeatherData, document.getElementById('heroLocationName').textContent, 0, 0);
     });
 
     getAdviceBtn.addEventListener('click', () => {
@@ -860,7 +875,7 @@
                     const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
                     const data = await res.json();
                     handleInput(data.address.city || data.address.town || data.address.village || 'Local Area');
-                } catch(e) { fetchWeatherByCoords(lat, lon, 'Local Area'); } // Fallback
+                } catch(e) { fetchWeatherByCoords(lat, lon, 'Local Area'); }
                 locateBtn.innerHTML = `<i data-lucide="map-pin" class="w-4 h-4 md:w-5 md:h-5 text-[var(--accent-1)]"></i>`; lucide.createIcons();
             }, () => {
                 showError("Location access denied.");
